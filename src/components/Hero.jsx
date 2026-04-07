@@ -1,16 +1,17 @@
-import React, { useState, useRef, Suspense, useEffect } from 'react';
+import React, { useState, useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
-import { motion, AnimatePresence, useSpring, useMotionValue, useTransform } from 'framer-motion';
+import { motion, useSpring, useMotionValue, useTransform } from 'framer-motion';
 import {
-  Search, Menu, X, ArrowRight, RotateCcw,
+  ArrowRight, RotateCcw,
   Briefcase, Plus, TrendingUp, Eye, Star, Play
 } from 'lucide-react';
 
+
 /* ═══════════════════════════════════════════════
    IMAGES
-═══════════════════════════════════════════════ */
+ ═══════════════════════════════════════════════ */
 const IMG_LEFT = 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80&fit=crop&crop=face';
 const IMG_RIGHT = 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80&fit=crop&crop=face';
 const AV1 = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&q=80&fit=crop&crop=face';
@@ -18,7 +19,7 @@ const AV2 = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&q
 
 /* ═══════════════════════════════════════════════
    STAR FIELD  (Three.js)
-═══════════════════════════════════════════════ */
+ ═══════════════════════════════════════════════ */
 function StarField() {
   const ref = useRef();
   const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 1.5 }));
@@ -38,7 +39,7 @@ function StarField() {
 
 /* ═══════════════════════════════════════════════
    FLOAT BADGE
-═══════════════════════════════════════════════ */
+ ═══════════════════════════════════════════════ */
 function FloatBadge({ children, delay = 0, style }) {
   return (
     <motion.div style={style}
@@ -56,7 +57,7 @@ function FloatBadge({ children, delay = 0, style }) {
 
 /* ═══════════════════════════════════════════════
    SPARKLE
-═══════════════════════════════════════════════ */
+ ═══════════════════════════════════════════════ */
 function Sparkle({ size = 14, delay = 0, style }) {
   return (
     <motion.div style={{ position: 'absolute', pointerEvents: 'none', zIndex: 4, ...style }}
@@ -68,88 +69,40 @@ function Sparkle({ size = 14, delay = 0, style }) {
 }
 
 /* ═══════════════════════════════════════════════
-   NAVBAR
-═══════════════════════════════════════════════ */
-const NAV_LINKS = ['Home', 'Services', 'Portfolio', 'Testimonials'];
+   DECORATIVE DASHED LINES
+ ═══════════════════════════════════════════════ */
+const DecoLines = () => (
+  <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 1 }} viewBox="0 0 1440 900" fill="none">
+    <motion.path
+      d="M270 700C270 790 350 850 450 850"
+      stroke="#ffffff"
+      strokeWidth="2"
+      strokeDasharray="6 6"
+      opacity="0.2"
+      initial={{ pathLength: 0 }}
+      animate={{ pathLength: 1 }}
+      transition={{ duration: 1.5, delay: 0.5 }}
+    />
+    <motion.path
+      d="M1300 100C1300 200 1200 220 1100 220C1000 220 950 400 1100 650"
+      stroke="#ffffff"
+      strokeWidth="2"
+      strokeDasharray="6 6"
+      opacity="0.2"
+      initial={{ pathLength: 0 }}
+      animate={{ pathLength: 1 }}
+      transition={{ duration: 2, delay: 0.8 }}
+    />
+    <circle cx="450" cy="850" r="4" fill="#b4ff39" opacity="0.6" />
+    <circle cx="1100" cy="650" r="4" fill="#b4ff39" opacity="0.6" />
+  </svg>
+);
 
-function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState('Home');
-  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const fn = () => setScrolled(window.scrollY > 40);
-    window.addEventListener('scroll', fn);
-    return () => window.removeEventListener('scroll', fn);
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : '';
-    return () => { document.body.style.overflow = ''; };
-  }, [open]);
-
-  return (
-    <>
-      {/* ── Desktop / Scrolled nav ── */}
-
-
-      {/* ── Mobile overlay ── */}
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: .35, ease: [.22, 1, .36, 1] }}
-            style={{
-              position: 'fixed', inset: 0, zIndex: 1100,
-              background: '#1535f0', display: 'flex', flexDirection: 'column',
-              alignItems: 'center', justifyContent: 'center', gap: 8,
-            }}>
-            <button onClick={() => setOpen(false)}
-              style={{
-                position: 'absolute', top: 20, right: 24,
-                background: 'rgba(255,255,255,.1)', border: 'none',
-                color: 'white', cursor: 'pointer', borderRadius: '50%',
-                width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              }}>
-              <X size={22} />
-            </button>
-            {NAV_LINKS.map((link, i) => (
-              <motion.button key={link} onClick={() => { setActive(link); setOpen(false); }}
-                initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: .05 + i * .07, ease: [.22, 1, .36, 1], duration: .45 }}
-                style={{
-                  background: 'none', border: 'none', color: 'white', cursor: 'pointer',
-                  fontSize: 48, fontFamily: "'Barlow Condensed', Impact, sans-serif",
-                  fontWeight: 900, textTransform: 'uppercase', letterSpacing: '-.01em',
-                  opacity: .9, lineHeight: 1.1,
-                }}>
-                {link}
-              </motion.button>
-            ))}
-            <motion.button
-              initial={{ opacity: 0, scale: .8 }} animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: .28, type: 'spring' }}
-              style={{
-                marginTop: 32, padding: '14px 36px', borderRadius: 50,
-                background: '#b4ff39', border: 'none', color: '#111',
-                fontSize: 16, fontFamily: "'Barlow', sans-serif", fontWeight: 800,
-                cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 10,
-              }}>
-              Get in Touch <ArrowRight size={18} />
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <style>{`.s-hamburger { display: none !important; } @media(max-width:768px){ .s-hamburger { display: flex !important; } }`}</style>
-    </>
-  );
-}
 
 /* ═══════════════════════════════════════════════
    HEADLINE WORD
-═══════════════════════════════════════════════ */
+ ═══════════════════════════════════════════════ */
 const wv = {
   hidden: { opacity: 0, y: 80, skewY: 6 },
   visible: (i) => ({
@@ -160,7 +113,7 @@ const wv = {
 
 /* ═══════════════════════════════════════════════
    MAIN EXPORT
-═══════════════════════════════════════════════ */
+ ═══════════════════════════════════════════════ */
 export default function SalfordHero() {
   const containerRef = useRef(null);
   const mx = useMotionValue(0), my = useMotionValue(0);
@@ -181,8 +134,8 @@ export default function SalfordHero() {
   const HS = {   // headline style
     fontFamily: "'Barlow Condensed', Impact, 'Arial Black', sans-serif",
     fontWeight: 900, color: 'white',
-    fontSize: 'clamp(80px, 12.5vw, 160px)',
-    lineHeight: 0.88, letterSpacing: '-0.02em',
+    fontSize: 'clamp(100px, 15vw, 190px)',
+    lineHeight: 0.82, letterSpacing: '-0.03em',
     textTransform: 'uppercase', display: 'inline-block',
   };
 
@@ -196,7 +149,7 @@ export default function SalfordHero() {
         /* bg deco arrows */
         .bd { position: absolute; font-weight: 900; line-height: 1;
           user-select: none; pointer-events: none;
-          color: rgba(100,130,255,.22); z-index: 2; }
+          color: rgba(100,130,255,.15); z-index: 2; }
 
         /* image fill */
         .imgfill { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
@@ -204,7 +157,12 @@ export default function SalfordHero() {
         /* leaf glyph */
         .leaf { color: #b4ff39; line-height:1; }
 
-        /* Description left-aligned under left content */
+        /* Cross decoration */
+        .deco-cross {
+          position: absolute; color: rgba(255,255,255,0.05);
+          font-size: 280px; font-weight: 100; pointer-events: none;
+        }
+
         @media (max-width:900px) {
           .hero-content { padding-left: 12px !important; padding-right: 12px !important; }
           .left-card { left: 10px !important; width: 120px !important; }
@@ -230,315 +188,201 @@ export default function SalfordHero() {
         {/* ── Subtle radial glow centre ── */}
         <div style={{
           position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none',
-          background: 'radial-gradient(ellipse 70% 60% at 52% 48%, rgba(80,100,255,.18) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse 70% 60% at 52% 48%, rgba(80,100,255,.22) 0%, transparent 70%)',
         }} />
 
-        {/* ── BG deco arrows ── */}
-        <span className="bd" style={{ top: 14, right: 22, fontSize: 38, opacity: .32, transform: 'rotate(-8deg)' }}>↗</span>
-        <span className="bd" style={{ top: 14, right: 62, fontSize: 26, opacity: .2 }}>↗</span>
-        <span className="bd" style={{ bottom: 28, right: 22, fontSize: 34, opacity: .28, transform: 'rotate(10deg)' }}>←</span>
-        <span className="bd" style={{ bottom: 58, right: 60, fontSize: 22, opacity: .18 }}>←</span>
+        {/* ── Deco Backgrounds ── */}
+        <DecoLines />
+        <div className="deco-cross" style={{ top: '-50px', right: '-80px', transform: 'rotate(15deg)' }}>+</div>
+        <div className="deco-cross" style={{ bottom: '-120px', left: '-100px', transform: 'rotate(-10deg)' }}>×</div>
 
         {/* ── Sparkles ── */}
         <Sparkle size={13} style={{ top: 88, left: '31%' }} delay={0} />
-        <Sparkle size={10} style={{ bottom: 64, left: 76 }} delay={1.1} />
-        <Sparkle size={12} style={{ top: 200, right: '36%' }} delay={1.7} />
-        <Sparkle size={8} style={{ top: 320, left: '22%' }} delay={0.6} />
+        <Sparkle size={10} style={{ bottom: 120, left: 110 }} delay={1.1} />
+        <Sparkle size={18} style={{ top: 220, right: '12%' }} delay={1.7} />
 
-        {/* ══ NAVBAR ══ */}
-        <Navbar />
+
 
         {/* ══ HERO BODY ══ */}
         <div style={{
           position: 'relative', zIndex: 10,
           display: 'flex', flexDirection: 'column',
-          minHeight: '100vh', paddingTop: 76,
+          minHeight: '100vh', paddingTop: 120,
         }}>
 
           {/* ── MAIN CONTENT AREA ── */}
-          <div style={{ flex: 1, position: 'relative', padding: '30px 36px 0' }}>
+          <div style={{ flex: 1, position: 'relative', padding: '0 40px' }}>
 
             {/* ─────── LEFT CARD ─────── */}
             <motion.div className="left-card"
               style={{
-                position: 'absolute', left: 36, top: 40,
-                width: 168, height: 250, borderRadius: 24, overflow: 'hidden',
-                border: '3px solid rgba(255,255,255,.18)',
-                boxShadow: '0 20px 60px rgba(0,0,30,.4), 0 0 0 1px rgba(255,255,255,.08)',
-                background: '#28c820',
+                position: 'absolute', left: 80, top: 240,
+                width: 280, height: 280, borderRadius: 40, overflow: 'hidden',
+                border: '6px solid rgba(180, 255, 57, 0.6)',
+                boxShadow: '0 30px 80px rgba(0,0,40,0.5)',
                 x: c1x, y: c1y, zIndex: 8,
               }}
-              initial={{ opacity: 0, x: -60, rotate: -4 }}
-              animate={{ opacity: 1, x: 0, rotate: 0 }}
-              transition={{ delay: .2, duration: .9, ease: [.22, 1, .36, 1] }}>
-              {/* green radial bg */}
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: 'radial-gradient(ellipse at 50% 110%, #42e038 0%, #28c820 55%, #1aa015 100%)',
-              }} />
-              <img src={IMG_LEFT} alt="Marketing professional" className="imgfill"
-                style={{ position: 'relative', zIndex: 2, opacity: .92 }} />
-            </motion.div>
+              initial={{ opacity: 0, scale: 0.8, x: -100 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}>
+              <div style={{ position: 'absolute', inset: 0, background: '#b4ff39', zIndex: 0 }} />
+              <img src={IMG_LEFT} alt="" className="imgfill" style={{ position: 'relative', zIndex: 1 }} />
 
-            {/* Lightbulb badge on left card */}
-            <FloatBadge delay={0.6} style={{
-              position: 'absolute', left: 22, top: 265, zIndex: 20,
-              width: 36, height: 36, borderRadius: '50%',
-              background: '#b4ff39', border: '2.5px solid #1535f0',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              color: '#1535f0',
-              boxShadow: '0 4px 16px rgba(180,255,57,.4)',
-            }}>
-              {/* bulb svg */}
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M9 18h6M10 22h4M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.7-3.3 6H8.3C6.3 13.7 5 11.5 5 9a7 7 0 0 1 7-7z" />
-              </svg>
-            </FloatBadge>
+              {/* Badge on card */}
+              <div style={{
+                position: 'absolute', top: 20, left: 20, zIndex: 5,
+                width: 50, height: 50, borderRadius: '50%', background: '#1535f0',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
+              }}>
+                <Briefcase size={24} />
+              </div>
+            </motion.div>
 
             {/* ─────── RIGHT CARD ─────── */}
             <motion.div className="right-card"
               style={{
-                position: 'absolute', right: 36, top: 20,
-                width: 178, height: 210, borderRadius: 24, overflow: 'hidden',
-                border: '3px solid rgba(255,255,255,.22)',
-                boxShadow: '0 20px 60px rgba(0,0,30,.4), 0 0 0 1px rgba(255,255,255,.08)',
-                background: '#2244cc',
+                position: 'absolute', right: 100, top: 40,
+                width: 200, height: 240, borderRadius: 32, overflow: 'hidden',
+                border: '4px solid rgba(255,255,255,0.2)',
+                boxShadow: '0 30px 80px rgba(0,0,40,0.5)',
                 x: c2x, y: c2y, zIndex: 8,
               }}
-              initial={{ opacity: 0, x: 60, rotate: 4 }}
-              animate={{ opacity: 1, x: 0, rotate: 0 }}
-              transition={{ delay: .2, duration: .9, ease: [.22, 1, .36, 1] }}>
-              <div style={{
-                position: 'absolute', inset: 0,
-                background: 'radial-gradient(ellipse at 50% 110%, #3a60f0 0%, #2244cc 55%, #1530a8 100%)',
-              }} />
-              <img src={IMG_RIGHT} alt="Marketing specialist" className="imgfill"
-                style={{ position: 'relative', zIndex: 2, filter: 'saturate(.9)' }} />
-            </motion.div>
+              initial={{ opacity: 0, scale: 0.8, x: 100 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}>
+              <div style={{ position: 'absolute', inset: 0, background: 'rgba(255,255,255,0.1)', zIndex: 0 }} />
+              <img src={IMG_RIGHT} alt="" className="imgfill" style={{ position: 'relative', zIndex: 1, opacity: 0.9 }} />
 
-            {/* Portfolio badge */}
-            <FloatBadge delay={0.55} style={{
-              position: 'absolute', right: 32, top: 8, zIndex: 22,
-              display: 'flex', alignItems: 'center', gap: 6,
-            }}>
+              {/* Portfolio Pill */}
               <div style={{
-                width: 34, height: 34, borderRadius: '50%',
-                background: 'white',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 4px 14px rgba(0,0,0,.2)',
-              }}>
-                <TrendingUp size={16} color="#1535f0" strokeWidth={2.5} />
-              </div>
-              <div style={{
-                background: 'white', borderRadius: 50,
-                padding: '7px 18px', fontSize: 13, fontWeight: 700,
-                color: '#1535f0', fontFamily: "'Barlow',sans-serif",
-                boxShadow: '0 4px 14px rgba(0,0,0,.2)',
+                position: 'absolute', bottom: 40, right: -40, zIndex: 10,
+                background: 'white', padding: '10px 25px', borderRadius: 40,
+                color: '#1535f0', fontWeight: 700, fontSize: 13, boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
               }}>
                 Portfolio
               </div>
-            </FloatBadge>
-
-            {/* Eye badge bottom-right */}
-            <FloatBadge delay={0.75} style={{
-              position: 'absolute', right: 72, bottom: 130, zIndex: 20,
-              width: 42, height: 42, borderRadius: '50%',
-              background: '#b4ff39', border: '3px solid #1535f0',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1535f0',
-              boxShadow: '0 4px 20px rgba(180,255,57,.4)',
-            }}>
-              <Eye size={18} strokeWidth={2.5} />
-            </FloatBadge>
-
-            {/* Arrow beside eye badge */}
-            <motion.span
-              animate={{ x: [-5, 5, -5] }}
-              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
-              style={{
-                position: 'absolute', right: 122, bottom: 144, zIndex: 5,
-                color: 'rgba(180,210,255,.5)', fontSize: 26, fontWeight: 900,
-              }}>←</motion.span>
+            </motion.div>
 
             {/* ─────── HEADLINE BLOCK ─────── */}
-            <div style={{ paddingLeft: 222, paddingRight: 230 }}>
+            <div style={{
+              marginTop: 40,
+              display: 'flex', flexDirection: 'column', alignItems: 'center'
+            }}>
 
-              {/* Row 1 — leaf BUILD badge */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 0 }}>
-
-                {/* Leaf left */}
-                <motion.span className="leaf"
-                  initial={{ opacity: 0, x: -22 }} animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: .18, duration: .5 }}
-                  style={{ fontSize: 38, marginRight: -6 }}>❧</motion.span>
-
+              {/* ROW 1: BUILD + 500+ */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 30, transform: 'translateX(-120px)' }}>
+                <span className="leaf" style={{ fontSize: 50 }}>❧</span>
                 <motion.span custom={0} variants={wv} initial="hidden" animate="visible" style={HS}>
                   BUILD
                 </motion.span>
 
-                {/* 500+ badge */}
                 <motion.div
-                  initial={{ opacity: 0, scale: .55 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: .44, type: 'spring', stiffness: 210, damping: 16 }}
-                  style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
-                  {/* briefcase circle */}
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.5, type: 'spring' }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
                   <div style={{
-                    width: 50, height: 50, borderRadius: '50%',
-                    background: 'rgba(255,255,255,.12)', border: '2.5px solid #b4ff39',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b4ff39',
-                    backdropFilter: 'blur(4px)',
+                    width: 60, height: 60, borderRadius: '50%', background: 'white',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1535f0'
                   }}>
-                    <Briefcase size={22} strokeWidth={2.5} />
+                    <Briefcase size={28} />
                   </div>
-                  {/* pill */}
                   <div style={{
-                    display: 'inline-flex', alignItems: 'center', gap: 10,
-                    background: '#b4ff39', borderRadius: 50, padding: '10px 18px',
-                    fontFamily: "'Barlow',sans-serif", whiteSpace: 'nowrap',
-                    boxShadow: '0 6px 24px rgba(180,255,57,.35)',
+                    background: '#b4ff39', padding: '12px 30px', borderRadius: 60,
+                    display: 'flex', alignItems: 'center', gap: 15, boxShadow: '0 10px 40px rgba(180,255,57,0.4)'
                   }}>
-                    <span style={{ fontSize: 20, fontWeight: 900, color: '#111' }}>500+</span>
-                    <span style={{ fontSize: 13, fontWeight: 600, color: '#333', opacity: .85 }}>Companies</span>
-                    <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ duration: 7, repeat: Infinity, ease: 'linear' }}
-                      style={{
-                        width: 28, height: 28, borderRadius: '50%', background: '#1535f0',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#b4ff39',
-                      }}>
-                      <RotateCcw size={13} strokeWidth={2.5} />
-                    </motion.div>
+                    <span style={{ fontSize: 24, fontWeight: 900, color: '#1535f0' }}>500+</span>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: '#1535f0', opacity: 0.8 }}>Companies</span>
+                    <RotateCcw size={16} />
                   </div>
                 </motion.div>
               </div>
 
-              {/* Row 2 — SMARTER */}
-              <motion.div custom={1} variants={wv} initial="hidden" animate="visible">
-                <span style={HS}>SMARTER</span>
+              {/* ROW 2: SMARTER */}
+              <motion.div
+                custom={1} variants={wv} initial="hidden" animate="visible"
+                style={{ ...HS, fontSize: 'clamp(140px, 22vw, 260px)', marginTop: -30, marginBottom: -30 }}>
+                SMARTER
               </motion.div>
 
-              {/* Row 3 — avatars Global Client BUSINESS leaf */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 14, marginTop: 0 }}>
-
-                {/* Avatar + Global Client */}
+              {/* ROW 3: GLOBAL CLIENT + BUSINESS */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 25, transform: 'translateX(100px)' }}>
                 <motion.div
-                  initial={{ opacity: 0, scale: .6 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: .52, type: 'spring', stiffness: 185, damping: 16 }}
-                  style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                  {/* stacked avatars */}
-                  <div style={{ display: 'flex', alignItems: 'center' }}>
-                    {[AV1, AV2].map((src, i) => (
-                      <div key={i} style={{
-                        width: 34, height: 34, borderRadius: '50%',
-                        border: '2.5px solid #1535f0',
-                        marginLeft: i === 0 ? 0 : -11,
-                        overflow: 'hidden', background: '#4466cc',
-                        boxShadow: '0 2px 8px rgba(0,0,30,.3)',
-                      }}>
-                        <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                      </div>
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.8 }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
+                  <div style={{ display: 'flex' }}>
+                    {[AV1, AV2].map((a, i) => (
+                      <img key={i} src={a} style={{
+                        width: 45, height: 45, borderRadius: '50%', border: '3px solid #1535f0',
+                        marginLeft: i > 0 ? -15 : 0
+                      }} />
                     ))}
+                    <div style={{
+                      width: 45, height: 45, borderRadius: '50%', border: '2px dashed white',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
+                    }}><Plus size={16} /></div>
                   </div>
-                  {/* plus */}
                   <div style={{
-                    width: 30, height: 30, borderRadius: '50%',
-                    border: '2px solid rgba(255,255,255,.55)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white',
-                  }}>
-                    <Plus size={15} strokeWidth={2.5} />
-                  </div>
-                  {/* Global Client pill */}
-                  <div style={{
-                    background: '#b4ff39', borderRadius: 50,
-                    padding: '8px 18px', fontSize: 14, fontWeight: 800,
-                    color: '#111', fontFamily: "'Barlow',sans-serif",
-                    whiteSpace: 'nowrap',
-                    boxShadow: '0 6px 24px rgba(180,255,57,.35)',
-                  }}>
-                    Global Client
-                  </div>
+                    background: '#b4ff39', padding: '8px 20px', borderRadius: 40,
+                    fontSize: 12, fontWeight: 800, color: '#1535f0'
+                  }}>Global Client</div>
                 </motion.div>
 
                 <motion.span custom={2} variants={wv} initial="hidden" animate="visible" style={HS}>
                   BUSINESS
                 </motion.span>
-
-                {/* Leaf right */}
-                <motion.span className="leaf"
-                  initial={{ opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: .4, duration: .5 }}
-                  style={{ fontSize: 36, marginLeft: -4 }}>❧</motion.span>
+                <span className="leaf" style={{ fontSize: 50 }}>❧</span>
               </div>
 
               {/* Description */}
               <motion.p
-                initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: .72, duration: .55 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1, duration: 0.8 }}
                 style={{
-                  marginTop: 28, color: 'white', fontSize: 14,
-                  fontFamily: "'Barlow',sans-serif", fontWeight: 400,
-                  lineHeight: 1.75, maxWidth: 340, opacity: .82,
+                  maxWidth: 550, textAlign: 'center', color: 'white', marginTop: 40,
+                  fontSize: 16, lineHeight: 1.6, opacity: 0.8, fontWeight: 500
                 }}>
                 We help brands scale faster with data-driven marketing, modern design,
-                and powerful digital solutions tailored to your goals, helping you reach
-                more customers and grow consistently.
+                and powerful digital solutions tailored to your goals.
               </motion.p>
+
+              {/* CTA Row */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 45 }}>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    padding: '18px 45px', borderRadius: 60, background: '#b4ff39',
+                    border: 'none', color: '#1535f0', fontWeight: 900,
+                    fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12,
+                    boxShadow: '0 20px 50px rgba(180,255,57,0.4)'
+                  }}>
+                  <Play size={18} fill="currentColor" />
+                  Start Project
+                </motion.button>
+                <button style={{
+                  padding: '18px 45px', borderRadius: 60, background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)', color: 'white', fontWeight: 700,
+                  fontSize: 16, cursor: 'pointer'
+                }}>Get Consultation</button>
+              </div>
+
+              {/* Eye Badge floating link */}
+              <FloatBadge delay={1.2} style={{ position: 'absolute', bottom: 100, right: 300 }}>
+                <div style={{
+                  width: 55, height: 55, borderRadius: '50%', background: '#b4ff39',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1535f0',
+                  border: '4px solid #1535f0', boxShadow: '0 10px 40px rgba(0,0,0,0.3)'
+                }}>
+                  <Eye size={24} strokeWidth={3} />
+                </div>
+              </FloatBadge>
+
             </div>
           </div>
-
-          {/* ══ CTA ROW ══ */}
-          <motion.div
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: .88, duration: .5 }}
-            style={{
-              display: 'flex', alignItems: 'center', gap: 14,
-              padding: '28px 36px 48px', paddingLeft: 258,
-              position: 'relative', zIndex: 10,
-            }}>
-
-            {/* play triangle */}
-            <div style={{
-              width: 0, height: 0,
-              borderTop: '12px solid transparent',
-              borderBottom: '12px solid transparent',
-              borderLeft: '22px solid #b4ff39',
-            }} />
-
-            <motion.button
-              whileHover={{ scale: 1.07, background: '#c9ff45' }}
-              whileTap={{ scale: .95 }}
-              style={{
-                padding: '13px 30px', borderRadius: 50,
-                background: '#b4ff39', border: 'none', color: '#111',
-                fontSize: 15, fontFamily: "'Barlow',sans-serif", fontWeight: 800,
-                cursor: 'pointer', letterSpacing: '.03em',
-                display: 'flex', alignItems: 'center', gap: 8,
-                boxShadow: '0 8px 28px rgba(180,255,57,.4)',
-              }}>
-              <Play size={14} fill="#111" strokeWidth={0} />
-              Start Project
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.05, background: 'rgba(255,255,255,.1)' }}
-              whileTap={{ scale: .95 }}
-              style={{
-                padding: '13px 30px', borderRadius: 50,
-                border: '1.5px solid rgba(255,255,255,.65)',
-                background: 'transparent', color: 'white', fontSize: 15,
-                fontFamily: "'Barlow',sans-serif", fontWeight: 600,
-                cursor: 'pointer', letterSpacing: '.03em',
-              }}>
-              Get Consultation
-            </motion.button>
-
-            {/* animated star accent */}
-            <motion.div
-              animate={{ rotate: [0, 20, -20, 0], scale: [1, 1.2, 1] }}
-              transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1.2 }}
-              style={{ marginLeft: 16, color: '#b4ff39', opacity: .7 }}>
-              <Star size={20} fill="#b4ff39" strokeWidth={0} />
-            </motion.div>
-          </motion.div>
         </div>
 
       </div>
