@@ -266,7 +266,8 @@ export default function SalfordHero() {
             {/* ─────── HEADLINE BLOCK ─────── */}
             <div style={{
               marginTop: 40,
-              display: 'flex', flexDirection: 'column', alignItems: 'center'
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              gap: '15px'
             }}>
 
               {/* ROW 1: BUILD + 500+ */}
@@ -301,7 +302,7 @@ export default function SalfordHero() {
               {/* ROW 2: SMARTER */}
               <motion.div
                 custom={1} variants={wv} initial="hidden" animate="visible"
-                style={{ ...HS, fontSize: 'clamp(140px, 22vw, 260px)', marginTop: -30, marginBottom: -30 }}>
+                style={{ ...HS, fontSize: 'clamp(120px, 18vw, 220px)', lineHeight: 0.9 }}>
                 SMARTER
               </motion.div>
 
