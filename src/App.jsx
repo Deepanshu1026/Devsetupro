@@ -8,9 +8,9 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <div className="App">
+    <div className="App" style={{ overflowX: 'hidden' }}>
       <Navbar />
-      <main>
+      <main style={{ background: '#050A1A' }}>
         <Hero />
         <Services />
         <Portfolio />

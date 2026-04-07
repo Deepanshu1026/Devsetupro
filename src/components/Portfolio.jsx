@@ -51,9 +51,14 @@ const Portfolio = () => {
           overflow: hidden;
         }
         .scroller-tile {
-          min-width: 70vw; /* Reduced from 85vw to feel less "huge" */
-          height: 60vh;   /* Reduced from 70vh to prevent screen takeover */
-          margin: 0 30px;
+          min-width: 48vw; 
+          height: 52vh;   
+          margin: 0 16px;
+          transition: transform 0.4s ease, border-color 0.4s ease;
+        }
+        .scroller-tile:hover {
+          transform: translateY(-8px);
+          border-color: rgba(255,255,255,0.2) !important;
         }
         .archive-bg-text {
           font-size: 12vw;

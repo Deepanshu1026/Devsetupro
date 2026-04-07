@@ -188,8 +188,9 @@ export default function SalfordHero() {
         }
 
         @media (max-width: 480px) {
-           .headline-row span:not(.leaf) { font-size: 14vw !important; }
-           .row-2 { font-size: 18vw !important; }
+           .headline-text { font-size: 16vw !important; }
+           .row-2 { font-size: 20vw !important; }
+           .headline-row { gap: 5px !important; }
         }
       `}</style>
 
@@ -200,6 +201,7 @@ export default function SalfordHero() {
           fontFamily: "'Barlow Condensed', Impact, sans-serif",
           overflow: 'hidden', position: 'relative',
         }}>
+
 
 
 
@@ -285,8 +287,10 @@ export default function SalfordHero() {
 
               {/* ROW 1: BUILD + 500+ */}
               <div className="headline-row row-1" style={{ gap: 20 }}>
-                <span className="leaf" style={{ fontSize: 36 }}>❧</span>
-                <motion.span custom={0} variants={wv} initial="hidden" animate="visible" style={HS}>
+                <span className="leaf" style={{ fontSize: 36, display: 'none' }}>❧</span>
+                <motion.span 
+                  className="headline-text"
+                  custom={0} variants={wv} initial="hidden" animate="visible" style={HS}>
                   BUILD
                 </motion.span>
 
@@ -296,18 +300,18 @@ export default function SalfordHero() {
                   transition={{ delay: 0.5, type: 'spring' }}
                   style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{
-                    width: 44, height: 44, borderRadius: '50%', background: 'white',
+                    width: 32, height: 32, borderRadius: '50%', background: 'white',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1535f0'
                   }}>
-                    <Briefcase size={20} />
+                    <Briefcase size={14} />
                   </div>
                   <div style={{
-                    background: '#b4ff39', padding: '8px 24px', borderRadius: 60,
-                    display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 30px rgba(180,255,57,0.4)'
+                    background: '#b4ff39', padding: '6px 16px', borderRadius: 60,
+                    display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 8px 30px rgba(180,255,57,0.4)'
                   }}>
-                    <span style={{ fontSize: 18, fontWeight: 900, color: '#1535f0' }}>500+</span>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: '#1535f0', opacity: 0.8 }}>Companies</span>
-                    <RotateCcw size={13} />
+                    <span style={{ fontSize: 13, fontWeight: 900, color: '#1535f0' }}>500+</span>
+                    <span style={{ fontSize: 9, fontWeight: 700, color: '#1535f0', opacity: 0.8 }}>Companies</span>
+                    <RotateCcw size={10} />
                   </div>
                 </motion.div>
               </div>
@@ -326,7 +330,7 @@ export default function SalfordHero() {
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 }}
-                  style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{ display: 'flex' }}>
                     {[AV1, AV2].map((a, i) => (
                       <img key={i} src={a} style={{

@@ -6,8 +6,18 @@ const Footer = () => {
   return (
     <footer style={{ background: '#1535f0', color: '#fff', padding: '120px 0 60px', position: 'relative', overflow: 'hidden' }}>
 
+      <style>{`
+        @media (max-width: 768px) {
+          .footer-watermark { font-size: 50vw !important; top: 10% !important; }
+          .footer-headline { font-size: 18vw !important; }
+          .footer-cta { padding: 18px 40px !important; width: 100% !important; }
+          .footer-links-grid { gap: 40px !important; text-align: center; justify-items: center !important; }
+          .footer-bottom { flex-direction: column !important; align-items: center !important; text-align: center !important; }
+        }
+      `}</style>
+
       {/* Decorative branding watermark */}
-      <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', fontSize: '30vw', fontWeight: 1000, color: 'rgba(255,255,255,0.03)', whiteSpace: 'nowrap', userSelect: 'none', zIndex: 0 }}>
+      <div className="footer-watermark" style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', fontSize: '25vw', fontWeight: 1000, color: 'rgba(255,255,255,0.03)', whiteSpace: 'nowrap', userSelect: 'none', zIndex: 0 }}>
         DEVSETUPRO
       </div>
 
@@ -16,14 +26,16 @@ const Footer = () => {
         {/* Call to Action Section */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '120px' }}>
           <motion.h2
+            className="footer-headline"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            style={{ fontSize: 'clamp(3rem, 15vw, 10rem)', fontWeight: 1000, fontFamily: 'var(--font-display)', lineHeight: 0.85, textTransform: 'uppercase' }}
+            style={{ fontSize: 'clamp(3rem, 12vw, 8rem)', fontWeight: 1000, fontFamily: 'var(--font-display)', lineHeight: 0.85, textTransform: 'uppercase' }}
           >
             Start <br /><span style={{ color: '#b4ff39' }}>Engagement</span>
           </motion.h2>
           <motion.button
+            className="footer-cta"
             whileHover={{ scale: 1.05 }}
             style={{
               background: '#fff',
@@ -34,6 +46,7 @@ const Footer = () => {
               fontSize: 'clamp(1rem, 2vw, 1.4rem)',
               display: 'inline-flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '16px',
               marginTop: '48px',
               border: 'none',
@@ -46,7 +59,7 @@ const Footer = () => {
         </div>
 
         {/* Links Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '60px', paddingTop: '80px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="footer-links-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '60px', paddingTop: '80px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <div>
             <h3 style={{ fontSize: '1.75rem', fontWeight: 900, fontFamily: 'var(--font-display)', color: '#b4ff39', marginBottom: '20px' }}>
               DEVSETUPRO
@@ -83,7 +96,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div style={{ marginTop: '80px', paddingTop: '40px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
+        <div className="footer-bottom" style={{ marginTop: '80px', paddingTop: '40px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
           <p style={{ opacity: 0.5, fontSize: '0.8rem' }}>© 2026 DEVSETUPRO | ESTABLISHED IN UK</p>
           <div style={{ display: 'flex', gap: '24px' }}>
             <a href="#" style={{ color: '#fff', opacity: 0.5, textDecoration: 'none', fontSize: '0.8rem' }}>Privacy Policy</a>
