@@ -134,7 +134,7 @@ export default function SalfordHero() {
   const HS = {   // headline style
     fontFamily: "'Barlow Condensed', Impact, 'Arial Black', sans-serif",
     fontWeight: 900, color: 'white',
-    fontSize: 'clamp(100px, 15vw, 190px)',
+    fontSize: 'clamp(60px, 8.5vw, 120px)',
     lineHeight: 0.82, letterSpacing: '-0.03em',
     textTransform: 'uppercase', display: 'inline-block',
   };
@@ -146,27 +146,50 @@ export default function SalfordHero() {
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html, body { overflow-x: hidden; }
 
-        /* bg deco arrows */
         .bd { position: absolute; font-weight: 900; line-height: 1;
           user-select: none; pointer-events: none;
           color: rgba(100,130,255,.15); z-index: 2; }
 
-        /* image fill */
         .imgfill { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; }
-
-        /* leaf glyph */
         .leaf { color: #b4ff39; line-height:1; }
 
-        /* Cross decoration */
         .deco-cross {
           position: absolute; color: rgba(255,255,255,0.05);
           font-size: 280px; font-weight: 100; pointer-events: none;
         }
 
-        @media (max-width:900px) {
-          .hero-content { padding-left: 12px !important; padding-right: 12px !important; }
-          .left-card { left: 10px !important; width: 120px !important; }
-          .right-card { right: 10px !important; width: 130px !important; }
+        /* --- RESPONSIVE CSS --- */
+        .headline-row { display: flex; align-items: center; width: 100%; justify-content: center; }
+        .row-1 { transform: translateX(-80px); }
+        .row-3 { transform: translateX(80px); }
+        .side-card { z-index: 8; box-shadow: 0 30px 80px rgba(0,0,40,0.5); pointer-events: none; }
+        .left-card { position: absolute; left: 6vw; top: 30vh; width: 20vw; max-width: 280px; aspect-ratio: 1; borderRadius: 40px; border: 6px solid rgba(180, 255, 57, 0.6); }
+        .right-card { position: absolute; right: 8vw; top: 8vh; width: 15vw; max-width: 200px; height: 240px; borderRadius: 32px; border: 4px solid rgba(255,255,255,0.2); }
+        .badge-eye { position: absolute; bottom: 10vh; right: 15vw; }
+
+        @media (max-width: 1400px) {
+          .row-1 { transform: translateX(-40px); }
+          .row-3 { transform: translateX(40px); }
+          .badge-eye { right: 8vw; }
+        }
+
+        @media (max-width: 1024px) {
+          .row-1, .row-3 { transform: translateX(0); }
+          .left-card, .right-card { top: 15vh; opacity: 0.4; }
+          .badge-eye { display: none; }
+        }
+
+        @media (max-width: 768px) {
+           .side-card { display: none; }
+           .headline-row { flex-direction: column; gap: 15px !important; text-align: center; transform: none !important; }
+           .cta-row { flex-direction: column; gap: 15px !important; width: 100%; }
+           .cta-row button { width: 100% !important; padding: 18px 20px !important; }
+           .hero-body { padding-top: 80px !important; padding-bottom: 60px !important; }
+        }
+
+        @media (max-width: 480px) {
+           .headline-row span:not(.leaf) { font-size: 14vw !important; }
+           .row-2 { font-size: 18vw !important; }
         }
       `}</style>
 
@@ -177,6 +200,8 @@ export default function SalfordHero() {
           fontFamily: "'Barlow Condensed', Impact, sans-serif",
           overflow: 'hidden', position: 'relative',
         }}>
+
+
 
         {/* ── Three.js background ── */}
         <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
@@ -204,24 +229,18 @@ export default function SalfordHero() {
 
 
         {/* ══ HERO BODY ══ */}
-        <div style={{
+        <div className="hero-body" style={{
           position: 'relative', zIndex: 10,
           display: 'flex', flexDirection: 'column',
-          minHeight: '100vh', paddingTop: 120,
+          minHeight: '100vh', paddingTop: 90,
         }}>
 
           {/* ── MAIN CONTENT AREA ── */}
           <div style={{ flex: 1, position: 'relative', padding: '0 40px' }}>
 
             {/* ─────── LEFT CARD ─────── */}
-            <motion.div className="left-card"
-              style={{
-                position: 'absolute', left: 80, top: 240,
-                width: 280, height: 280, borderRadius: 40, overflow: 'hidden',
-                border: '6px solid rgba(180, 255, 57, 0.6)',
-                boxShadow: '0 30px 80px rgba(0,0,40,0.5)',
-                x: c1x, y: c1y, zIndex: 8,
-              }}
+            <motion.div className="side-card left-card"
+              style={{ x: c1x, y: c1y }}
               initial={{ opacity: 0, scale: 0.8, x: -100 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ delay: 0.2, duration: 1, ease: [0.22, 1, 0.36, 1] }}>
@@ -230,7 +249,7 @@ export default function SalfordHero() {
 
               {/* Badge on card */}
               <div style={{
-                position: 'absolute', top: 20, left: 20, zIndex: 5,
+                position: 'absolute', top: '10%', left: '10%', zIndex: 5,
                 width: 50, height: 50, borderRadius: '50%', background: '#1535f0',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
               }}>
@@ -239,14 +258,8 @@ export default function SalfordHero() {
             </motion.div>
 
             {/* ─────── RIGHT CARD ─────── */}
-            <motion.div className="right-card"
-              style={{
-                position: 'absolute', right: 100, top: 40,
-                width: 200, height: 240, borderRadius: 32, overflow: 'hidden',
-                border: '4px solid rgba(255,255,255,0.2)',
-                boxShadow: '0 30px 80px rgba(0,0,40,0.5)',
-                x: c2x, y: c2y, zIndex: 8,
-              }}
+            <motion.div className="side-card right-card"
+              style={{ x: c2x, y: c2y }}
               initial={{ opacity: 0, scale: 0.8, x: 100 }}
               animate={{ opacity: 1, scale: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 1, ease: [0.22, 1, 0.36, 1] }}>
@@ -255,7 +268,7 @@ export default function SalfordHero() {
 
               {/* Portfolio Pill */}
               <div style={{
-                position: 'absolute', bottom: 40, right: -40, zIndex: 10,
+                position: 'absolute', bottom: 40, right: -20, zIndex: 10,
                 background: 'white', padding: '10px 25px', borderRadius: 40,
                 color: '#1535f0', fontWeight: 700, fontSize: 13, boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
               }}>
@@ -271,8 +284,8 @@ export default function SalfordHero() {
             }}>
 
               {/* ROW 1: BUILD + 500+ */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 30, transform: 'translateX(-120px)' }}>
-                <span className="leaf" style={{ fontSize: 50 }}>❧</span>
+              <div className="headline-row row-1" style={{ gap: 20 }}>
+                <span className="leaf" style={{ fontSize: 36 }}>❧</span>
                 <motion.span custom={0} variants={wv} initial="hidden" animate="visible" style={HS}>
                   BUILD
                 </motion.span>
@@ -281,60 +294,61 @@ export default function SalfordHero() {
                   initial={{ opacity: 0, scale: 0.5 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.5, type: 'spring' }}
-                  style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
+                  style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                   <div style={{
-                    width: 60, height: 60, borderRadius: '50%', background: 'white',
+                    width: 44, height: 44, borderRadius: '50%', background: 'white',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1535f0'
                   }}>
-                    <Briefcase size={28} />
+                    <Briefcase size={20} />
                   </div>
                   <div style={{
-                    background: '#b4ff39', padding: '12px 30px', borderRadius: 60,
-                    display: 'flex', alignItems: 'center', gap: 15, boxShadow: '0 10px 40px rgba(180,255,57,0.4)'
+                    background: '#b4ff39', padding: '8px 24px', borderRadius: 60,
+                    display: 'flex', alignItems: 'center', gap: 10, boxShadow: '0 8px 30px rgba(180,255,57,0.4)'
                   }}>
-                    <span style={{ fontSize: 24, fontWeight: 900, color: '#1535f0' }}>500+</span>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: '#1535f0', opacity: 0.8 }}>Companies</span>
-                    <RotateCcw size={16} />
+                    <span style={{ fontSize: 18, fontWeight: 900, color: '#1535f0' }}>500+</span>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: '#1535f0', opacity: 0.8 }}>Companies</span>
+                    <RotateCcw size={13} />
                   </div>
                 </motion.div>
               </div>
 
               {/* ROW 2: SMARTER */}
               <motion.div
+                className="row-2"
                 custom={1} variants={wv} initial="hidden" animate="visible"
-                style={{ ...HS, fontSize: 'clamp(120px, 18vw, 220px)', lineHeight: 0.9 }}>
+                style={{ ...HS, fontSize: 'clamp(80px, 12vw, 160px)', lineHeight: 0.85 }}>
                 SMARTER
               </motion.div>
 
               {/* ROW 3: GLOBAL CLIENT + BUSINESS */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 25, transform: 'translateX(100px)' }}>
+              <div className="headline-row row-3" style={{ gap: 20 }}>
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8 }}
-                  style={{ display: 'flex', alignItems: 'center', gap: 15 }}>
+                  style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                   <div style={{ display: 'flex' }}>
                     {[AV1, AV2].map((a, i) => (
                       <img key={i} src={a} style={{
-                        width: 45, height: 45, borderRadius: '50%', border: '3px solid #1535f0',
-                        marginLeft: i > 0 ? -15 : 0
+                        width: 36, height: 36, borderRadius: '50%', border: '2.5px solid #1535f0',
+                        marginLeft: i > 0 ? -12 : 0
                       }} />
                     ))}
                     <div style={{
-                      width: 45, height: 45, borderRadius: '50%', border: '2px dashed white',
+                      width: 36, height: 36, borderRadius: '50%', border: '2px dashed white',
                       display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white'
-                    }}><Plus size={16} /></div>
+                    }}><Plus size={14} /></div>
                   </div>
                   <div style={{
-                    background: '#b4ff39', padding: '8px 20px', borderRadius: 40,
-                    fontSize: 12, fontWeight: 800, color: '#1535f0'
+                    background: '#b4ff39', padding: '6px 18px', borderRadius: 40,
+                    fontSize: 10, fontWeight: 800, color: '#1535f0'
                   }}>Global Client</div>
                 </motion.div>
 
                 <motion.span custom={2} variants={wv} initial="hidden" animate="visible" style={HS}>
                   BUSINESS
                 </motion.span>
-                <span className="leaf" style={{ fontSize: 50 }}>❧</span>
+                <span className="leaf" style={{ fontSize: 36 }}>❧</span>
               </div>
 
               {/* Description */}
@@ -344,14 +358,15 @@ export default function SalfordHero() {
                 transition={{ delay: 1, duration: 0.8 }}
                 style={{
                   maxWidth: 550, textAlign: 'center', color: 'white', marginTop: 40,
-                  fontSize: 16, lineHeight: 1.6, opacity: 0.8, fontWeight: 500
+                  fontSize: 16, lineHeight: 1.6, opacity: 0.8, fontWeight: 500,
+                  padding: '0 20px'
                 }}>
                 We help brands scale faster with data-driven marketing, modern design,
                 and powerful digital solutions tailored to your goals.
               </motion.p>
 
               {/* CTA Row */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginTop: 45 }}>
+              <div className="cta-row" style={{ display: 'flex', alignItems: 'center', gap: 30, marginTop: 60, padding: '0 20px' }}>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -359,20 +374,26 @@ export default function SalfordHero() {
                     padding: '18px 45px', borderRadius: 60, background: '#b4ff39',
                     border: 'none', color: '#1535f0', fontWeight: 900,
                     fontSize: 16, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 12,
-                    boxShadow: '0 20px 50px rgba(180,255,57,0.4)'
+                    boxShadow: '0 20px 50px rgba(180,255,57,0.4)',
+                    whiteSpace: 'nowrap'
                   }}>
                   <Play size={18} fill="currentColor" />
                   Start Project
                 </motion.button>
-                <button style={{
-                  padding: '18px 45px', borderRadius: 60, background: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.2)', color: 'white', fontWeight: 700,
-                  fontSize: 16, cursor: 'pointer'
-                }}>Get Consultation</button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    padding: '18px 45px', borderRadius: 60, background: 'rgba(255,255,255,0.1)',
+                    border: '1px solid rgba(255,255,255,0.2)', color: 'white', fontWeight: 700,
+                    fontSize: 16, cursor: 'pointer', whiteSpace: 'nowrap'
+                  }}>
+                  Get Consultation
+                </motion.button>
               </div>
 
               {/* Eye Badge floating link */}
-              <FloatBadge delay={1.2} style={{ position: 'absolute', bottom: 100, right: 300 }}>
+              <FloatBadge delay={1.2} className="badge-eye" style={{ zIndex: 20 }}>
                 <div style={{
                   width: 55, height: 55, borderRadius: '50%', background: '#b4ff39',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1535f0',
@@ -381,6 +402,7 @@ export default function SalfordHero() {
                   <Eye size={24} strokeWidth={3} />
                 </div>
               </FloatBadge>
+
 
             </div>
           </div>

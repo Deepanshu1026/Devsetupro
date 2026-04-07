@@ -35,12 +35,11 @@ const Services = () => {
       ref={targetRef}
       style={{ 
         background: '#b4ff39', 
-        padding: '80px 0', 
+        padding: '100px 0', 
         color: '#1535f0', 
         position: 'relative', 
         zIndex: 5,
         borderRadius: '60px 60px 0 0',
-        marginTop: '-100px',
         minHeight: '80vh'
       }}
     >
