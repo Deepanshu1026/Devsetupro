@@ -8,7 +8,7 @@ const Footer = () => {
 
       {/* Decorative branding watermark */}
       <div style={{ position: 'absolute', top: '0', left: '50%', transform: 'translateX(-50%)', fontSize: '30vw', fontWeight: 1000, color: 'rgba(255,255,255,0.03)', whiteSpace: 'nowrap', userSelect: 'none', zIndex: 0 }}>
-        SALFORD
+        DEVSETUPRO
       </div>
 
       <div className="max-w-1440 mx-auto px-6 md:px-10 relative" style={{ zIndex: 10 }}>
@@ -49,7 +49,7 @@ const Footer = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '60px', paddingTop: '80px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           <div>
             <h3 style={{ fontSize: '1.75rem', fontWeight: 900, fontFamily: 'var(--font-display)', color: '#b4ff39', marginBottom: '20px' }}>
-              SALFORD & CO.
+              DEVSETUPRO
             </h3>
             <p style={{ maxWidth: '350px', fontSize: '1rem', opacity: 0.7, lineHeight: 1.6, marginBottom: '32px' }}>
               We architect the world's most resilient digital systems, engineered for scale and dominance.
@@ -84,7 +84,7 @@ const Footer = () => {
         </div>
 
         <div style={{ marginTop: '80px', paddingTop: '40px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
-          <p style={{ opacity: 0.5, fontSize: '0.8rem' }}>© 2026 SALFORD & CO. | ESTABLISHED IN UK</p>
+          <p style={{ opacity: 0.5, fontSize: '0.8rem' }}>© 2026 DEVSETUPRO | ESTABLISHED IN UK</p>
           <div style={{ display: 'flex', gap: '24px' }}>
             <a href="#" style={{ color: '#fff', opacity: 0.5, textDecoration: 'none', fontSize: '0.8rem' }}>Privacy Policy</a>
             <a href="#" style={{ color: '#fff', opacity: 0.5, textDecoration: 'none', fontSize: '0.8rem' }}>Institutional Access</a>

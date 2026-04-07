@@ -70,7 +70,7 @@ function Sparkle({ size = 14, delay = 0, style }) {
 /* ═══════════════════════════════════════════════
    NAVBAR
 ═══════════════════════════════════════════════ */
-const NAV_LINKS = ['Home', 'Collection', 'New Arrivals'];
+const NAV_LINKS = ['Home', 'Services', 'Portfolio', 'Testimonials'];
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -213,7 +213,7 @@ export default function SalfordHero() {
       `}</style>
 
       {/* ══ WRAPPER ══ */}
-      <div ref={containerRef} onMouseMove={onMove}
+      <div id="home" ref={containerRef} onMouseMove={onMove}
         style={{
           minHeight: '100vh', background: '#1535f0',
           fontFamily: "'Barlow Condensed', Impact, sans-serif",

@@ -4,8 +4,9 @@ import { Menu, X, ArrowRight, Search } from 'lucide-react';
 
 const NAV_LINKS = [
   { label: 'Home', href: '#home' },
-  { label: 'Collection', href: '#collection' },
-  { label: 'New Arrivals', href: '#arrivals' },
+  { label: 'Services', href: '#services' },
+  { label: 'Portfolio', href: '#portfolio' },
+  { label: 'Testimonials', href: '#testimonials' },
 ];
 
 export default function Navbar() {
@@ -62,6 +63,7 @@ export default function Navbar() {
           color: #b4ff39; font-weight: 900; font-size: 17px;
           letter-spacing: .06em; font-family: 'Barlow', sans-serif;
           text-decoration: none; white-space: nowrap;
+          text-transform: uppercase;
         }
         .nav-logo span { color: white; margin-right: 2px; }
 
@@ -205,7 +207,7 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: .55, ease: 'easeOut' }}
           >
-            <span>SALFORD</span> & CO.
+            DEVSETUPRO
           </motion.a>
 
           {/* Desktop links */}
