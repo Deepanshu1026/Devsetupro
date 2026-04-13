@@ -9,7 +9,7 @@ const NAV_LINKS = [
   { label: 'Testimonials', href: '#testimonials' },
 ];
 
-export default function Navbar() {
+export default function Navbar({ onOpenContact }) {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [active, setActive] = useState('Home');
@@ -246,7 +246,7 @@ export default function Navbar() {
             <button className="nav-search" aria-label="Search">
               <Search size={16} strokeWidth={2.5} />
             </button>
-            <button className="nav-cta">
+            <button className="nav-cta" onClick={onOpenContact}>
               Get in Touch <ArrowRight size={15} strokeWidth={2.5} />
             </button>
             {/* Hamburger — visible on mobile */}
@@ -305,7 +305,7 @@ export default function Navbar() {
             {/* CTA */}
             <motion.button
               className="mobile-cta"
-              onClick={() => setIsOpen(false)}
+              onClick={() => { setIsOpen(false); onOpenContact && onOpenContact(); }}
               initial={{ opacity: 0, scale: .85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: .28, type: 'spring', stiffness: 200, damping: 18 }}
