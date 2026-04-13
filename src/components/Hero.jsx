@@ -1,7 +1,5 @@
 import React, { useState, useRef, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
-import * as random from 'maath/random/dist/maath-random.esm';
+
 import { motion, useSpring, useMotionValue, useTransform } from 'framer-motion';
 import {
   ArrowRight, RotateCcw,
@@ -17,25 +15,7 @@ const IMG_RIGHT = 'https://images.unsplash.com/photo-1580489944761-15a19d654956?
 const AV1 = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&q=80&fit=crop&crop=face';
 const AV2 = 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=80&q=80&fit=crop&crop=face';
 
-/* ═══════════════════════════════════════════════
-   STAR FIELD  (Three.js)
- ═══════════════════════════════════════════════ */
-function StarField() {
-  const ref = useRef();
-  const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 1.5 }));
-  useFrame((_, dt) => {
-    ref.current.rotation.x -= dt / 14;
-    ref.current.rotation.y -= dt / 18;
-  });
-  return (
-    <group rotation={[0, 0, Math.PI / 4]}>
-      <Points ref={ref} positions={sphere} stride={3} frustumCulled={false}>
-        <PointMaterial transparent color="#ffffff" size={0.0032}
-          sizeAttenuation depthWrite={false} opacity={0.5} />
-      </Points>
-    </group>
-  );
-}
+
 
 /* ═══════════════════════════════════════════════
    FLOAT BADGE
@@ -205,12 +185,7 @@ export default function SalfordHero() {
 
 
 
-        {/* ── Three.js background ── */}
-        <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
-          <Canvas camera={{ position: [0, 0, 1] }}>
-            <Suspense fallback={null}><StarField /></Suspense>
-          </Canvas>
-        </div>
+
 
         {/* ── Subtle radial glow centre ── */}
         <div style={{
